@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "589333516608",
+    "project_id": "my-test-chat-app-eda5d",
+    "storage_bucket": "my-test-chat-app-eda5d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:589333516608:android:ed9970067d86dbbd8b2aa5",
+        "android_client_info": {
+          "package_name": "com.example.chat_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC-b3ALOl1a76TaM53Q1dZaltWRWs7C-lE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
