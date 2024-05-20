@@ -1,9 +1,9 @@
 import 'dart:async';
 import 'dart:io';
-import 'dart:typed_data';
 
 import 'package:chat_app/components/my_avatar.dart';
 import 'package:chat_app/services/auth/auth_service.dart';
+import 'package:chat_app/services/chat/chat_service.dart';
 import 'package:chat_app/services/files/avatars_service.dart';
 import 'package:chat_app/themes/theme_provider.dart';
 import 'package:flutter/cupertino.dart';
@@ -22,26 +22,7 @@ class _SettingsPageState extends State<SettingsPage> {
 
   final _auth = AuthService();
   final _avatars = AvatarService();
-
-  Uint8List? _avatar;
-
-  @override
-  void initState() {
-    super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_){
-    _loadAvatar();
-  });
-  }
-
-  Future _loadAvatar() async{
-    _avatar = await _avatars.getAvatar(_auth.getCurrentUser()!.uid.toString());
-
-    if (mounted){
-      setState(() {
-      
-      });
-    }
-  }
+  final _chatService = ChatService();
 
   Future _pickImage(BuildContext context) async{
     final img = await ImagePicker().pickImage(source: ImageSource.gallery);
@@ -52,10 +33,6 @@ class _SettingsPageState extends State<SettingsPage> {
       var imageBytes = await File(img.path).readAsBytes();
 
       await _avatars.saveAvatar(_auth.getCurrentUser()!.uid.toString(), imageBytes);
-
-      setState(() {
-        _avatar = imageBytes;
-      });
     } 
     catch(e){
       showDialog(context: context, builder: (context) => AlertDialog(
@@ -78,7 +55,12 @@ class _SettingsPageState extends State<SettingsPage> {
           children: [
             // change avatar
 
-            MyAvatar(avatar: _avatar, size: 100, onTap: () => _pickImage(context)),
+            StreamBuilder(
+              stream: _chatService.getUserStream(_auth.getCurrentUser()!.uid),
+              builder: (context, snapshot){
+                return MyAvatar(avatar: snapshot.data?["avatar_link"], size: 100, onTap: () => _pickImage(context));
+              }
+            ),
 
             const SizedBox(height: 25),
 

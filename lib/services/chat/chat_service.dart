@@ -6,13 +6,23 @@ class ChatService {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
-  Stream<List<Map<String, dynamic>>> getUsersStrem() {
+  Stream<List<Map<String, dynamic>>> getUsersStream() {
     return _firestore.collection("Users").snapshots().map((snapshot) {
       return snapshot.docs.map((doc) {
         final user = doc.data();
 
         return user;
       }).toList();
+    });
+  }
+
+  Stream <Map<String, dynamic>> getUserStream(String uid){
+    return _firestore.collection("Users").snapshots().map((snapshot) {
+      return snapshot.docs.map((doc) {
+        final user = doc.data();
+
+        return user;
+      }).where((element) => element["uid"] == uid).first;
     });
   }
 

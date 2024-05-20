@@ -25,7 +25,7 @@ class HomePage extends StatelessWidget {
 
   Widget _buildUserList(){
     return StreamBuilder(
-      stream: chatService.getUsersStrem(),
+      stream: chatService.getUsersStream(),
       builder: (context, snapshot){
         if (snapshot.hasError){
           return const Text("Ошибка");
@@ -45,8 +45,11 @@ class HomePage extends StatelessWidget {
     if(userData["email"] != authService.getCurrentUser()!.email){
       return UserTile(
       text: userData["email"],
-      userID: userData["uid"],
-      onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => ChatPage(recieverEmail: userData["email"], recieverId: userData["uid"],))),
+      avatarUrl: userData["avatar_link"],
+      onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => ChatPage(
+        recieverEmail: userData["email"], 
+        recieverId: userData["uid"], 
+        recieverAvatarUrl: userData["avatar_link"],))),
     );
     }
     else{
